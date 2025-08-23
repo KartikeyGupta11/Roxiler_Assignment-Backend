@@ -7,9 +7,11 @@ const storeOwnerSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
-    storeName: { type: String, required: true },
+    storeName: { type: String},
     storeRating: { type: Number, default: 0 },
     storeLocation: { type: String },
 });
 
-export const StoreOwner = mongoose.model("StoreOwner", storeOwnerSchema);
+// export const StoreOwner = mongoose.model("StoreOwner", storeOwnerSchema);
+export const StoreOwner = mongoose.models.StoreOwner || mongoose.model("StoreOwner", storeOwnerSchema);
+

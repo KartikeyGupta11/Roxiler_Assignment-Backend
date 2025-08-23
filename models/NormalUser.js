@@ -7,7 +7,6 @@ const normalUserSchema = new mongoose.Schema({
         required: true, 
         unique: true 
     },
-    phone: { type: String },
 });
 
 export const NormalUser = mongoose.model("NormalUser", normalUserSchema);
