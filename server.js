@@ -10,6 +10,8 @@ import statsRoutes from "./routes/AdminRoutes/statsRoutes.js";
 import addNewUsersRoutes from "./routes/AdminRoutes/addNewUsersRoutes.js";
 import getAllUsersRoutes from "./routes/AdminRoutes/getAllUserRoutes.js";
 import storeManagerRoutes from "./routes/AdminRoutes/storeManagerRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
+import storeFilteringRoutes from "./routes/NormalUserRoutes/storeFilteringRoutes.js";
 
 const app = express();
 connectDB();
@@ -26,12 +28,16 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/otp", otpRoutes);
 app.use("/api/store", storeRoutes);
+app.use("/api/rating",ratingRoutes);
 
 //Admin routes
 app.use("/api/admin/stats",statsRoutes);
 app.use("/api/admin",addNewUsersRoutes);
 app.use("/api/admin",getAllUsersRoutes);
 app.use("/api/admin/store-manager",storeManagerRoutes);
+
+//Normal User routes
+app.use("/api/normal-user",storeFilteringRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

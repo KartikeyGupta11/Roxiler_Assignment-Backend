@@ -1,5 +1,5 @@
-import { User } from "../../models/user.js";
-import { StoreOwner } from "../../models/storeOwner.js";
+import { User } from "../../models/User.js";
+import { StoreOwner } from "../../models/StoreOwner.js";
 
 // Get filtered stores and owners
 export const getStoresList = async (req, res) => {
