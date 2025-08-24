@@ -12,6 +12,7 @@ import getAllUsersRoutes from "./routes/AdminRoutes/getAllUserRoutes.js";
 import storeManagerRoutes from "./routes/AdminRoutes/storeManagerRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import storeFilteringRoutes from "./routes/NormalUserRoutes/storeFilteringRoutes.js";
+import fetchRatingRoutes from "./routes/StoreOwnerRoutes/fetchRatingRoutes.js";
 
 const app = express();
 connectDB();
@@ -38,6 +39,9 @@ app.use("/api/admin/store-manager",storeManagerRoutes);
 
 //Normal User routes
 app.use("/api/normal-user",storeFilteringRoutes);
+
+// Store Owner routes
+app.use("/api/store-owner", fetchRatingRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

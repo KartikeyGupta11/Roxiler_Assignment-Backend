@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { Rating } from "../models/StoreRating.js";
 import { StoreOwner } from "../models/StoreOwner.js";
+import { RatingCounter } from "../models/RatingCounter.js";
 
-// Helper to update the average rating for a store owner
 async function updateStoreAverageRating(storeId) {
   if (!mongoose.Types.ObjectId.isValid(storeId)) {
     console.error("Invalid storeId passed to updateStoreAverageRating:", storeId);
@@ -19,29 +19,16 @@ async function updateStoreAverageRating(storeId) {
   await StoreOwner.findByIdAndUpdate(storeId, { storeRating: average });
 }
 
-// Submit or update a rating
 export const submitRating = async (req, res) => {
   try {
     const { storeId, rating } = req.body;
     const userId = req.user?._id;
 
-    if (!userId) {
-      return res.status(401).json({ message: "Unauthorized: user not found" });
-    }
+    if (!userId) return res.status(401).json({ message: "Unauthorized: user not found" });
+    if (!storeId || rating === undefined) return res.status(400).json({ message: "Store ID and rating are required." });
+    if (!mongoose.Types.ObjectId.isValid(storeId)) return res.status(400).json({ message: "Invalid Store ID format." });
+    if (rating < 1 || rating > 5) return res.status(400).json({ message: "Rating must be between 1 and 5." });
 
-    if (!storeId || rating === undefined) {
-      return res.status(400).json({ message: "Store ID and rating are required." });
-    }
-
-    if (!mongoose.Types.ObjectId.isValid(storeId)) {
-      return res.status(400).json({ message: "Invalid Store ID format." });
-    }
-
-    if (rating < 1 || rating > 5) {
-      return res.status(400).json({ message: "Rating must be between 1 and 5." });
-    }
-
-    // Check if rating already exists for this user and store
     const existingRating = await Rating.findOne({ storeId, userId });
 
     if (existingRating) {
@@ -50,6 +37,12 @@ export const submitRating = async (req, res) => {
     } else {
       await Rating.create({ storeId, userId, rating });
     }
+
+    await RatingCounter.findOneAndUpdate(
+      {}, 
+      { $inc: { count: 1 } },
+      { upsert: true, new: true }
+    );
 
     await updateStoreAverageRating(storeId);
 
@@ -60,7 +53,6 @@ export const submitRating = async (req, res) => {
   }
 };
 
-// Get all ratings for a store owner
 export const getStoreRatings = async (req, res) => {
   try {
     const { storeId } = req.params;
@@ -80,7 +72,6 @@ export const getStoreRatings = async (req, res) => {
   }
 };
 
-// Get the logged-in user's rating for a store
 export const getUserRating = async (req, res) => {
   try {
     const { storeId } = req.params;

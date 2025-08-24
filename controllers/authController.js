@@ -47,8 +47,7 @@ export const register = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: "7d" }
         );
-
-        // send response
+        
         const { password: pw, ...rest } = user._doc;
 
         res.status(201)

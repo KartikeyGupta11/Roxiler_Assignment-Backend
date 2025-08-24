@@ -5,7 +5,6 @@ export const storeFilter = async (req, res) => {
   try {
     const { storeName, storeLocation } = req.query;
 
-    // Build filter for stores directly
     let filter = {};
     if (storeName) filter.storeName = { $regex: storeName, $options: "i" };
     if (storeLocation) filter.storeLocation = { $regex: storeLocation, $options: "i" };

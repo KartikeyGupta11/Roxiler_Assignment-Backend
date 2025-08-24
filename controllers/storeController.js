@@ -1,4 +1,3 @@
-import express from 'express';
 import { StoreOwner } from '../models/StoreOwner.js';
 import { User } from '../models/User.js';
 

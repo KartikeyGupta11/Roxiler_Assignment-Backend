@@ -1,11 +1,13 @@
 import {User} from "../../models/User.js";
 import {StoreOwner} from "../../models/StoreOwner.js";
+import { RatingCounter } from "../../models/RatingCounter.js";
 
 export const countUsers = async (req, res) => {
     try {
         const totalUsers = await User.countDocuments();
         const totalStores = await StoreOwner.countDocuments();
-        const totalRatings = 1;
+        const counter = await RatingCounter.findOne();
+        const totalRatings = counter ? counter.count : 0;
         
         res.json({totalUsers, totalStores, totalRatings});
     } catch (error) {

@@ -1,6 +1,4 @@
 import { User } from "../../models/User.js";
-import { SystemAdmin } from "../../models/SystemAdmin.js";
-import { NormalUser } from "../../models/NormalUser.js";
 import { StoreOwner } from "../../models/StoreOwner.js";
 
 export const getAllUsers = async (req, res) => {

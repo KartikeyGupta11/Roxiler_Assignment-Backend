@@ -12,6 +12,5 @@ const storeOwnerSchema = new mongoose.Schema({
     storeLocation: { type: String },
 });
 
-// export const StoreOwner = mongoose.model("StoreOwner", storeOwnerSchema);
 export const StoreOwner = mongoose.models.StoreOwner || mongoose.model("StoreOwner", storeOwnerSchema);
 
